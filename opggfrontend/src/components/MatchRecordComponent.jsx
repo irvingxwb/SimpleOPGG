@@ -1,6 +1,6 @@
 import React, {Component} from "react";
-import champion_table from "../../data/loldata/info/champion_table.json";
-import summoner_table from "../../data/loldata/info/summoner_table.json";
+import champion_table from "../../data/info/champion_table.json";
+import summoner_table from "../../data/info/summoner_table.json";
 import "./MatchRecord.css";
 
 let playerMap = {};
@@ -68,7 +68,7 @@ class MatchRecord extends Component {
                 return (
                   <li key={(Math.round(Math.random() * 1000000))}>
                     <img 
-                      src={require("../../data/loldata/img/item/" + item)}
+                      src={require("../../data/img/item/" + item)}
                       alt=""
                       className="Content"
                     />
@@ -101,17 +101,17 @@ class MatchRecord extends Component {
     return (
       <div className="User">
         <img
-          src={require("../../data/loldata/img/champion/" + user_champion)}
+          src={require("../../data/img/champion/" + user_champion)}
           alt=""
           className="User Icon"
         />
         <img
-          src={require("../../data/loldata/img/spell/" + user_spell1)}
+          src={require("../../data/img/spell/" + user_spell1)}
           alt=""
           className="User Spell s1"
         />
         <img
-          src={require("../../data/loldata/img/spell/" + user_spell2)}
+          src={require("../../data/img/spell/" + user_spell2)}
           alt=""
           className="User Spell s2"
         />
@@ -135,7 +135,7 @@ class MatchRecord extends Component {
     return (
       <li key={Math.round(Math.random() * 1000000)} className="ListItem">
         <img
-          src={require("../../data/loldata/img/champion/" + img)}
+          src={require("../../data/img/champion/" + img)}
           alt=""
           className="championIcon"
         />
