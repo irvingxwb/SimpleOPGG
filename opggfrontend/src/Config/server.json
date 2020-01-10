@@ -1,0 +1,8 @@
+{
+	"server" : "http://localhost:8000/",
+	"register" : "register/",
+	"login" : "login/",
+	"matchlist" : "matchlist/",
+	"matchrecord" : "matchrecord/",
+	"matchdata" : "matchdata/"
+}

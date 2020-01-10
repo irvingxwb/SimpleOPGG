@@ -1,0 +1,118 @@
+.MatchList {
+  position: absolute;
+  top: 15%;
+  left: 10%;
+}
+
+.MatchRecord {
+  position: relative;
+  width: 900px;
+  height: 140px;
+  margin: 20px;
+  border-style: solid;
+  border-width: 10px;
+  border-color: rgb(0,160,255);
+  background-color: rgb(0, 180, 255);
+}
+
+.List {
+  position: absolute;
+  list-style-type: none;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.List.p1 {
+  left: 520px;
+}
+
+.List.p2 {
+  left: 680px;
+}
+
+.ListItem {
+  position: relative;
+  height: 23px;
+  width: 150px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.championIcon {
+  position: relative;
+  border-radius: 10%;
+  width: 20px;
+  height: 20px;
+}
+
+.User {
+  position: absolute;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.User.Icon {
+  border-radius: 100%;
+  width: 70px;
+  height: 70px;
+  top: 25px;
+  left: 80px;
+}
+
+.User.Spell {
+  border-radius: 30%;
+  width: 36px;
+  height: 36px;
+  left: 165px;
+}
+
+.User.Spell.s1 {
+  top: 20px;
+}
+
+.User.Spell.s2 {
+  top: 65px;
+}
+
+.User.KDA {
+  text-align: center;
+  font-style: italic;
+  font-weight: bold;
+  width: 200px;
+}
+
+.User.KDA.p1 {
+  font-size: 20px;
+  top: 25px;
+  left: 175px;
+}
+
+.User.KDA.p2 {
+  font-size: 16px;
+  top: 70px;
+  left: 175px;
+}
+
+.ItemList {
+  position: relative;
+  float: left;
+  list-style-type: none;
+  margin: 0;
+  padding: 0; 
+  overflow: hidden;
+  left: 360px;
+  top: 6px;
+}
+
+.Item{
+  float: left;
+  padding:0px;
+  width: fit-content;
+}
+
+.Content{
+  margin: 5px;
+  width: 45px;
+  height: 45px;
+  border-radius: 30%;
+  text-decoration: none;
+}

@@ -1,0 +1,7 @@
+{
+    "summonerid_url" : ".api.riotgames.com/lol/summoner/v4/summoners/by-name/",
+    "matchlist_url" : ".api.riotgames.com/lol/match/v4/matchlists/by-account/",
+    "match_url" : ".api.riotgames.com/lol/match/v4/matches/",
+    "api_key" : "?api_key=RGAPI-3ce4bda4-766b-42f6-91c7-35d8e908b781",
+    "region" : "na1"
+}

@@ -1,0 +1,53 @@
+{
+    "matches": [
+    {
+        "lane": "TOP",
+        "gameId": 3248766023,
+        "champion": 13,
+        "platformId": "NA1",
+        "timestamp": 1577651203076,
+        "queue": 440,
+        "role": "SOLO",
+        "season": 13
+    },
+    {
+        "lane": "TOP",
+        "gameId": 3248752690,
+        "champion": 236,
+        "platformId": "NA1",
+        "timestamp": 1577649151402,
+        "queue": 440,
+        "role": "SOLO",
+        "season": 13
+    },
+    {
+        "lane": "TOP",
+        "gameId": 3248607561,
+        "champion": 41,
+        "platformId": "NA1",
+        "timestamp": 1577646950990,
+        "queue": 440,
+        "role": "SOLO",
+        "season": 13
+    },
+    {
+        "lane": "BOTTOM",
+        "gameId": 3248537363,
+        "champion": 81,
+        "platformId": "NA1",
+        "timestamp": 1577644717654,
+        "queue": 440,
+        "role": "DUO_CARRY",
+        "season": 13
+    },
+    {
+        "lane": "BOTTOM",
+        "gameId": 3248592730,
+        "champion": 236,
+        "platformId": "NA1",
+        "timestamp": 1577642970828,
+        "queue": 440,
+        "role": "DUO_CARRY",
+        "season": 13
+    }]
+}
