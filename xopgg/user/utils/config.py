@@ -1,0 +1,5 @@
+summonerid_url = ".api.riotgames.com/lol/summoner/v4/summoners/by-name/"
+matchlist_url = ".api.riotgames.com/lol/match/v4/matchlists/by-account/"
+matchrecord_url = ".api.riotgames.com/lol/match/v4/matches/"
+api_key = "RRGAPI-b8343fed-252e-4482-a4bd-03feed7ee74d"
+region = "na1"

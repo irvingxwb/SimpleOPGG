@@ -1,4 +1,4 @@
-from .views import UserRegisterView, UserLoginView, GetMatchListDataView, GetMatchRecordDataView, GetMatchDataView, UserAddAccountView
+from .views import *
 from django.urls import path
 
 urlpatterns = [
@@ -7,5 +7,6 @@ urlpatterns = [
     path('addaccount/', UserAddAccountView.as_view()),
     path('matchlist/', GetMatchListDataView.as_view()),
     path('matchrecord/', GetMatchRecordDataView.as_view()),
-    path('matchdata/', GetMatchDataView.as_view())
+    path('matchdata/', GetMatchDataView.as_view()),
+    path('getaccountlist/', UserGetAccountListView.as_view())
 ]

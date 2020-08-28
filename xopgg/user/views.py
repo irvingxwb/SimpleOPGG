@@ -2,29 +2,24 @@ import os
 import json
 import requests
 
+from .utils import config
 from django.http import HttpResponse
-from rest_framework import status
-from rest_framework.views import APIView
-from rest_framework.response import Response
-
-from rest_framework.parsers import FormParser, MultiPartParser
-from .serializer import UserSerializer, AccountSerializer
+from django.views import View
 from .models import User, Account
+
 # Create your views here.
 
-
-class UserLoginView(APIView):
-    parser_classes = [FormParser, MultiPartParser]
+class UserLoginView(View):
 
     def post(self, request):
-        response = {}
+        response = HttpResponse()
         Username = request.POST.get('username')
         Password = request.POST.get('password')
 
         if User.objects.filter(username=Username).count() == 0:
             response['result'] = 'failed'
             response['message'] = 'username not exist'
-            return Response(response, status=status.HTTP_200_OK)
+            return response
 
         verified = User.objects.get(username=Username).password
         if verified == Password:
@@ -34,25 +29,25 @@ class UserLoginView(APIView):
             response['result'] = 'failed'
             response['message'] = 'incorrect password'
 
-        return Response(response, status=status.HTTP_200_OK)
+        return response
 
-class UserRegisterView(APIView):
-    parser_classes = [FormParser, MultiPartParser]
+
+class UserRegisterView(View):
 
     def post(self, request):
-        response = {}
+        response = HttpResponse()
         Username = request.POST.get('username')
         Password = request.POST.get('password')
         Email = request.POST.get('email')
         if User.objects.filter(username=Username).count() != 0:
             response['result'] = 'failed'
             response['message'] = 'username already exist'
-            return Response(response, status=status.HTTP_200_OK)
+            return response
 
         if User.objects.filter(email=Email).count() != 0:
             response['result'] = 'failed'
             response['message'] = 'email already used'
-            return Response(response, status=status.HTTP_200_OK)
+            return response
 
         newuser = User.objects.create(username=Username, password=Password, email=Email)
         newuser.save()
@@ -60,30 +55,28 @@ class UserRegisterView(APIView):
         response['result'] = 'success'
         response['message'] = 'register succeed'
 
-        return Response(response, status=status.HTTP_200_OK)
+        return response
 
-class UserAddAccountView(APIView):
-    parser_classes = [FormParser, MultiPartParser]
-    root_dir = ""
 
-    def __init__(self):
-        settings_dir = os.path.dirname(__file__)
-        self.root_dir = os.path.abspath(os.path.dirname(settings_dir))
+class UserAddAccountView(View):
 
     def post(self, request):
-        response = {}
+        response = HttpResponse()
         Username = request.POST.get('username')
         summonername = request.POST.get('summonername')
 
-        with open(self.root_dir + '/user/Config/Riot.json') as json_data_file:
-            config = json.load(json_data_file)
+        myUrl = 'https://' + config.region + config.summonerid_url + summonername
+        Riotresponse = requests.get(url=myUrl, params={'api_key': config['api_key']})
 
-        myUrl = 'https://' + config['region'] + config['summonerid_url'] + summonername
-        Riotresponse = requests.get(url=myUrl, params={'api_key' : config['api_key']})
+        user = User.objects.get(username=Username)
+        dbResult = Account.objects.filter(user=user)
 
         if Riotresponse.status_code != 200:
             response['result'] = 'failed'
             response['message'] = 'summoner did not find'
+        elif dbResult.exists():
+            response['result'] = 'failed'
+            response['message'] = 'summoner already been added'
         else:
             in_user = User.objects.get(username=Username)
             new_account = Account.objects.create(user=in_user, accountid=summonername)
@@ -91,32 +84,39 @@ class UserAddAccountView(APIView):
             response['result'] = 'success'
             response['message'] = 'register account succeed'
 
-        return Response(response, status=status.HTTP_200_OK)
+        return response
 
 
-class GetMatchListDataView(APIView):
-    parser_classes = [FormParser, MultiPartParser]
+class UserGetAccountListView(View):
     root_dir = ""
 
-    def __init__(self):
-        settings_dir = os.path.dirname(__file__)
-        self.root_dir = os.path.abspath(os.path.dirname(settings_dir))
+    def post(self, request):
+        response = HttpResponse()
+
+        Username = request.POST.get('username')
+
+        user = User.objects.get(username=Username)
+        dbResult = Account.objects.filter(user=user).values('accountid')
+
+        response['result'] = "success"
+        response['message'] = dbResult
+        return response
+
+
+class GetMatchListDataView(View):
 
     def post(self, request):
-        response = {}
+        response = HttpResponse()
         summoner_name = request.POST.get('summonername')
         region = request.POST.get('region')
 
-        with open(self.root_dir + '/user/Config/Riot.json') as json_data_file:
-            config = json.load(json_data_file)
-
-        myUrl = 'https://' + region + config['summonerid_url'] + summoner_name
-        Riotresponse = requests.get(url=myUrl, params={'api_key' : config['api_key']})
+        myUrl = 'https://' + region + config.summonerid_url + summoner_name
+        Riotresponse = requests.get(url=myUrl, params={'api_key': config.api_key})
         response_data = json.loads(Riotresponse.text)
         accountid = response_data['accountId']
 
-        matchlistUrl = 'https://' + region + config['matchlist_url'] + accountid
-        Riotresponse = requests.get(url=matchlistUrl, params={'api_key' : config['api_key']})
+        matchlistUrl = 'https://' + region + config.matchlist_url + accountid
+        Riotresponse = requests.get(url=matchlistUrl, params={'api_key': config.api_key})
         response_data = json.loads(Riotresponse.text)
 
         print(response_data)
@@ -124,73 +124,50 @@ class GetMatchListDataView(APIView):
         response['result'] = 'success'
         response['data'] = response_data
 
-        return Response(response, status=status.HTTP_200_OK)
+        return response
 
 
-class GetMatchRecordDataView(APIView):
-    parser_classes = [FormParser, MultiPartParser]
-    root_dit = ""
-
-    def __init__(self):
-        settings_dir = os.path.dirname(__file__)
-        self.root_dir = os.path.abspath(os.path.dirname(settings_dir))
-
+class GetMatchRecordDataView(View):
 
     def post(self, request):
-        response = {}
+        response = HttpResponse()
         matchid = request.POST.get('matchid')
         region = request.POST.get('region')
 
-        with open(self.root_dir + '/user/Config/Riot.json') as json_data_file:
-            config = json.load(json_data_file)
-
-        myUrl = 'https://' + region + config['match_url'] + matchid
-        Riotresponse = requests.get(url=myUrl, params={'api_key': config['api_key']})
+        myUrl = 'https://' + region + config.match_url + matchid
+        Riotresponse = requests.get(url=myUrl, params={'api_key': config.api_key})
         response_data = json.loads(Riotresponse.text)
         response['result'] = 'success'
         response['data'] = response_data
 
-        return Response(response, status=status.HTTP_200_OK)
+        return response
 
 
-class GetMatchDataView(APIView):
-    parser_classes = [FormParser, MultiPartParser]
-    root_dit = ""
-
-    def __init__(self):
-        settings_dir = os.path.dirname(__file__)
-        self.root_dir = os.path.abspath(os.path.dirname(settings_dir))
-
+class GetMatchDataView(View):
 
     def post(self, request):
-        response = {}
+        response = HttpResponse()
         match_data = []
         summonername = request.POST.get('summonername')
         region = request.POST.get('region')
 
-        with open(self.root_dir + '/user/Config/Riot.json') as json_data_file:
-            config = json.load(json_data_file)
-
-        Url = 'https://' + region + config['summonerid_url'] + summonername
-        Riotresponse = requests.get(url=Url, params={'api_key': config['api_key']})
+        Url = 'https://' + region + config.summonerid_url + summonername
+        Riotresponse = requests.get(url=Url, params={'api_key': config.api_key})
         response_data = json.loads(Riotresponse.text)
 
         accountId = response_data['accountId']
-        Url = 'https://' + region + config['matchlist_url'] + accountId
-        Riotresponse = requests.get(url=Url, params={'api_key': config['api_key'], 'endIndex': 5, 'beginIndex': 0})
+        Url = 'https://' + region + config.matchlist_url + accountId
+        Riotresponse = requests.get(url=Url, params={'api_key': config.api_key., 'endIndex': 5, 'beginIndex': 0})
         response_matchlist = json.loads(Riotresponse.text)
 
         for match in response_matchlist['matches']:
             gameId = match['gameId']
-            Url = 'https://' + region + config['matchrecord_url'] + str(gameId)
-            Riotresponse = requests.get(url=Url, params={'api_key': config['api_key']})
+            Url = 'https://' + region + config.matchrecord_url + str(gameId)
+            Riotresponse = requests.get(url=Url, params={'api_key': config.api_key})
             response_matchdata = json.loads(Riotresponse.text)
             match_data.append(response_matchdata)
 
         response['result'] = 'success'
         response['data'] = match_data
 
-        return Response(response, status=status.HTTP_200_OK)
-
-
-
+        return response
