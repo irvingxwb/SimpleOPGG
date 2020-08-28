@@ -13,8 +13,6 @@ class Login extends Component {
     username_ref: React.createRef(),
     password_ref: React.createRef(),
     email_ref: React.createRef(),
-    username: "",
-    password: "",
     isLogin: true,
     isUserPage: false,
     isShowModal: false,
@@ -71,7 +69,7 @@ class Login extends Component {
           <Form.Label>Username</Form.Label>
           <Form.Control placeholder="Username" ref={this.state.username_ref} />
         </Form.Group>
-
+t
         <Form.Group controlId="Password">
           <Form.Label>Password</Form.Label>
           <Form.Control

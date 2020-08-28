@@ -1,3 +1,5 @@
 /opggfrontend/data/img/
 /opggfrontend/node_modules/
+**/__pycache__/*
+
 
