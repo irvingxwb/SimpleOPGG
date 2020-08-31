@@ -3,7 +3,7 @@ import json
 import requests
 
 from .utils import config
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.views import View
 from .models import User, Account
 
@@ -12,14 +12,14 @@ from .models import User, Account
 class UserLoginView(View):
 
     def post(self, request):
-        response = HttpResponse()
+        response = {}
         Username = request.POST.get('username')
         Password = request.POST.get('password')
 
         if User.objects.filter(username=Username).count() == 0:
             response['result'] = 'failed'
             response['message'] = 'username not exist'
-            return response
+            return JsonResponse(response)
 
         verified = User.objects.get(username=Username).password
         if verified == Password:
@@ -29,25 +29,25 @@ class UserLoginView(View):
             response['result'] = 'failed'
             response['message'] = 'incorrect password'
 
-        return response
+        return JsonResponse(response)
 
 
 class UserRegisterView(View):
 
     def post(self, request):
-        response = HttpResponse()
+        response = {}
         Username = request.POST.get('username')
         Password = request.POST.get('password')
         Email = request.POST.get('email')
         if User.objects.filter(username=Username).count() != 0:
             response['result'] = 'failed'
             response['message'] = 'username already exist'
-            return response
+            return JsonResponse(response)
 
         if User.objects.filter(email=Email).count() != 0:
             response['result'] = 'failed'
             response['message'] = 'email already used'
-            return response
+            return JsonResponse(response)
 
         newuser = User.objects.create(username=Username, password=Password, email=Email)
         newuser.save()
@@ -55,13 +55,13 @@ class UserRegisterView(View):
         response['result'] = 'success'
         response['message'] = 'register succeed'
 
-        return response
+        return JsonResponse(response)
 
 
 class UserAddAccountView(View):
 
     def post(self, request):
-        response = HttpResponse()
+        response = {}
         Username = request.POST.get('username')
         summonername = request.POST.get('summonername')
 
@@ -84,14 +84,14 @@ class UserAddAccountView(View):
             response['result'] = 'success'
             response['message'] = 'register account succeed'
 
-        return response
+        return JsonResponse(response)
 
 
 class UserGetAccountListView(View):
     root_dir = ""
 
     def post(self, request):
-        response = HttpResponse()
+        response = {}
 
         Username = request.POST.get('username')
 
@@ -100,13 +100,13 @@ class UserGetAccountListView(View):
 
         response['result'] = "success"
         response['message'] = dbResult
-        return response
+        return JsonResponse(response)
 
 
 class GetMatchListDataView(View):
 
     def post(self, request):
-        response = HttpResponse()
+        response = {}
         summoner_name = request.POST.get('summonername')
         region = request.POST.get('region')
 
@@ -119,18 +119,16 @@ class GetMatchListDataView(View):
         Riotresponse = requests.get(url=matchlistUrl, params={'api_key': config.api_key})
         response_data = json.loads(Riotresponse.text)
 
-        print(response_data)
-
         response['result'] = 'success'
         response['data'] = response_data
 
-        return response
+        return JsonResponse(response)
 
 
 class GetMatchRecordDataView(View):
 
     def post(self, request):
-        response = HttpResponse()
+        response = {}
         matchid = request.POST.get('matchid')
         region = request.POST.get('region')
 
@@ -140,13 +138,13 @@ class GetMatchRecordDataView(View):
         response['result'] = 'success'
         response['data'] = response_data
 
-        return response
+        return JsonResponse(response)
 
 
 class GetMatchDataView(View):
 
     def post(self, request):
-        response = HttpResponse()
+        response = {}
         match_data = []
         summonername = request.POST.get('summonername')
         region = request.POST.get('region')
@@ -154,10 +152,9 @@ class GetMatchDataView(View):
         Url = 'https://' + region + config.summonerid_url + summonername
         Riotresponse = requests.get(url=Url, params={'api_key': config.api_key})
         response_data = json.loads(Riotresponse.text)
-
         accountId = response_data['accountId']
         Url = 'https://' + region + config.matchlist_url + accountId
-        Riotresponse = requests.get(url=Url, params={'api_key': config.api_key., 'endIndex': 5, 'beginIndex': 0})
+        Riotresponse = requests.get(url=Url, params={'api_key': config.api_key, 'endIndex': 5, 'beginIndex': 0})
         response_matchlist = json.loads(Riotresponse.text)
 
         for match in response_matchlist['matches']:
@@ -170,4 +167,4 @@ class GetMatchDataView(View):
         response['result'] = 'success'
         response['data'] = match_data
 
-        return response
+        return JsonResponse(response)

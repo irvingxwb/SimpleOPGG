@@ -8,7 +8,7 @@ class User(models.Model):
     email = models.CharField(max_length=50)
 
     def __str__(self):
-        return self.username + self.password + self.email
+        return self.username + "/" + self.password + "/" + self.email
 
 
 class Account(models.Model):
@@ -16,4 +16,4 @@ class Account(models.Model):
     accountid = models.CharField(max_length=30)
 
     def __str__(self):
-        return self.accountid + self.user.username
+        return self.accountid + "/" + self.user.username
