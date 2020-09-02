@@ -11,8 +11,16 @@
   margin: 20px;
   border-style: solid;
   border-width: 10px;
+}
+
+.MatchRecord.win {
   border-color: rgb(0,160,255);
   background-color: rgb(0, 180, 255);
+}
+
+.MatchRecord.lose {
+  border-color: rgb(255,160,0);
+  background-color: rgb(255, 180, 0);
 }
 
 .List {
@@ -55,14 +63,14 @@
   width: 70px;
   height: 70px;
   top: 25px;
-  left: 80px;
+  left: 100px;
 }
 
 .User.Spell {
   border-radius: 30%;
   width: 36px;
   height: 36px;
-  left: 165px;
+  left: 185px;
 }
 
 .User.Spell.s1 {
@@ -99,7 +107,7 @@
   margin: 0;
   padding: 0; 
   overflow: hidden;
-  left: 360px;
+  left: 320px;
   top: 6px;
 }
 
@@ -115,4 +123,37 @@
   height: 45px;
   border-radius: 30%;
   text-decoration: none;
+}
+
+.MatchInfo {
+  position: relative;
+  float: left;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  left: 10px;
+  top: 6px;
+}
+
+.Info {
+  position: relative;
+  overflow: auto;
+}
+
+.Info.win {
+  font-size: 20px;
+  left: 10px;
+  top: 5px;
+}
+
+.Info.mode {
+  font-size: 15px;
+  left: 5px;
+}
+
+.Info.time {
+  font-size: 15px;
+  left: 5px;
+  bottom: 5px;
 }

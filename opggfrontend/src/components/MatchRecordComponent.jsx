@@ -6,16 +6,14 @@ import "./MatchRecord.css";
 class MatchRecord extends Component {
     state = {
         playerid: '',
-        team: [],
-        team_Info: []
+        game_Info: []
     };
 
     constructor(props) {
         super(props)
 
         this.state = {
-            team: props.data.participantIdentities,
-            team_Info: props.data.participants,
+            game_Info: props.data,
             playerid: props.playerid
         }
 
@@ -23,26 +21,56 @@ class MatchRecord extends Component {
     }
 
     render() {
-        let list1 = this.state.team_Info.slice(0, 5).map(record => this.getMatchTable(record))
-        let list2 = this.state.team_Info.slice(5, 10).map(record => this.getMatchTable(record))
+        let list1 = this.state.game_Info.participants.slice(0, 5).map(record => this.getMatchTable(record))
+        let list2 = this.state.game_Info.participants.slice(5, 10).map(record => this.getMatchTable(record))
 
         // find search user's info
-        var user_record
+        var user_record, isWin
         for (var i = 0; i < 10; i++) {
-            if (this.state.team[i].player.summonerName.toLowerCase() === this.state.playerid.toLowerCase()) {
-                user_record = this.state.team_Info[i]
+            if (this.state.game_Info.participantIdentities[i].player.summonerName.toLowerCase() === this.state.playerid.toLowerCase()) {
+                user_record = this.state.game_Info.participants[i]
+                isWin = user_record.stats['win']
             }
         }
         console.log(user_record)
+        if (isWin) {
+            return (
+                <div className="MatchRecord win">
+                    {this.getMatchInfo(user_record)}
+                    {this.getUserTable(user_record)}
+                    {this.getItemTable(user_record)}
+                    <ul className="List p1">{list1}</ul>
+                    <ul className="List p2">{list2}</ul>
+                </div>
+            );
+        }
+        else {
+            return (
+                <div className="MatchRecord lose">
+                    {this.getMatchInfo(user_record)}
+                    {this.getUserTable(user_record)}
+                    {this.getItemTable(user_record)}
+                    <ul className="List p1">{list1}</ul>
+                    <ul className="List p2">{list2}</ul>
+                </div>
+            );
+        }
 
+
+    }
+
+    getMatchInfo = (user_record) => {
+        var isWin = user_record.stats['win'] ? "Win" : "Lost"
+        var mode = this.state.game_Info.gameMode
+        var time = this.state.game_Info.gameDuration
+        var min = Math.floor(time / 60)
+        var sec = time % 60
         return (
-            <div className="MatchRecord">
-                {this.getUserTable(user_record)}
-                {this.getItemTable(user_record)}
-                <ul className="List p1">{list1}</ul>
-                <ul className="List p2">{list2}</ul>
-            </div>
-        );
+            <div className="MatchInfo">
+                <p className="Info win">{isWin}</p>
+                <p className="Info mode">{mode}</p>
+                <p className="Info time">{min}m {sec}s</p>
+            </div>)
     }
 
     getItemTable = user_record => {
@@ -66,15 +94,15 @@ class MatchRecord extends Component {
                     const table = (
                         <ul key={(Math.round(Math.random() * 1000000))} className="Item">
                             {list.map(item => {
-                               return (
-                                        <li key={(Math.round(Math.random() * 1000000))}>
-                                            <img
-                                                src={require("../../data/img/item/" + item)}
-                                                alt=""
-                                                className="Content"
-                                            />
-                                        </li>
-                                    )
+                                return (
+                                    <li key={(Math.round(Math.random() * 1000000))}>
+                                        <img
+                                            src={require("../../data/img/item/" + item)}
+                                            alt=""
+                                            className="Content"
+                                        />
+                                    </li>
+                                )
                             })}
                         </ul>
                     );
@@ -128,8 +156,8 @@ class MatchRecord extends Component {
 
     getMatchTable = record => {
         let id = record.participantId - 1;
-        let player = this.state.team[id].player.summonerName;
-        let championId = this.state.team_Info[id].championId;
+        let player = this.state.game_Info.participantIdentities[id].player.summonerName;
+        let championId = this.state.game_Info.participants[id].championId;
         let champion = champion_table[championId]
         var img
         if (!champion) {

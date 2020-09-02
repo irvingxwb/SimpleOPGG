@@ -15,18 +15,7 @@ class Match extends Component {
     ShowRecord: false
   };
 
-//   async componentDidMount() {
-//     if (this.state.summonerid != '') {
-//         let url = config.server + config.matchdata
-//         let params = new URLSearchParams()
-//         params.append('summonername', this.state.summonerid)
-//         params.append('region', 'na1')
-//
-//         let response = await axios.post(url, params)
-//         this.setState({match_list: response.data.data})
-//         this.setState({ShowRecord: true})
-//     }
-//   }
+
 
   render() {
     return (
