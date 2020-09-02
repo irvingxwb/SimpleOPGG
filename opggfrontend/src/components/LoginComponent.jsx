@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import bimage from "../../data/background/background.jpg";
-import {Button, Form, ButtonGroup, Modal} from "react-bootstrap";
+import {Button, Form, ButtonGroup, Modal, ListGroup} from "react-bootstrap";
 import axios from "axios";
 
 import "./Login.css";
@@ -9,7 +9,7 @@ import config from "../Config/server.json";
 
 class Login extends Component {
     state = {
-        data: [],
+        user_data: [],
         match_list: [],
         username_ref: React.createRef(),
         password_ref: React.createRef(),
@@ -53,11 +53,11 @@ class Login extends Component {
     getOptionBar() {
         if (this.state.isUserPage) {
             return (
-                <ButtonGroup>
-                    <Button className="userpage">
+                <ListGroup>
+                    <ListGroup.Item className="userpage">
                         Welcome
-                    </Button>
-                </ButtonGroup>)
+                    </ListGroup.Item>
+                </ListGroup>)
         } else {
             return (
                 <ButtonGroup>
@@ -143,8 +143,17 @@ class Login extends Component {
     }
 
     getUserPage() {
-        const user = <div>{this.state.data}</div>;
+        const user = (
+            <ListGroup as="ul">
+                {this.state.user_data.map(value => <ListGroup.Item as="li" key={value} action
+                                                                   onClick={this.alterAccount(value)}>{value}</ListGroup.Item>)}
+            </ListGroup>
+        )
         return user;
+    }
+
+    alterAccount(accountId){
+
     }
 
     handleLogin = async (event) => {
@@ -164,7 +173,7 @@ class Login extends Component {
                 isShowModal: true,
                 isUserPage: true,
                 message: response.data.message,
-                data: response.data.data
+                user_data: response.data.data
             });
         } else {
             this.setState({isShowModal: true, isUserPage: false, message: response.data.message});
