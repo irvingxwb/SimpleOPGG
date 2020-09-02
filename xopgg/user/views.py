@@ -25,6 +25,9 @@ class UserLoginView(View):
         if verified == Password:
             response['result'] = 'success'
             response['message'] = 'login succeed'
+            user = User.objects.get(username=Username)
+            qs = Account.objects.filter(user=user)
+            response['data'] = [e.accountid for e in qs]
         else:
             response['result'] = 'failed'
             response['message'] = 'incorrect password'
@@ -54,6 +57,8 @@ class UserRegisterView(View):
 
         response['result'] = 'success'
         response['message'] = 'register succeed'
+        qs = Account.objects.filter(user=newuser)
+        response['data'] = [e.accountid for e in qs]
 
         return JsonResponse(response)
 
