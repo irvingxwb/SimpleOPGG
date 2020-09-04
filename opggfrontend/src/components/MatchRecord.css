@@ -5,6 +5,12 @@
 }
 
 .MatchRecord {
+  position: absolute;
+  top: 15%;
+  left: 10%;
+}
+
+.MatchRecord {
   position: relative;
   width: 900px;
   height: 140px;
