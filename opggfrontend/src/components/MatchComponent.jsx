@@ -31,7 +31,7 @@ class Match extends Component {
     getIndex = (idx_count) => {
         var index = (
             <ListGroup horizontal>
-                {[...Array(idx_count).keys()].map(value => <ListGroup.Item>value</ListGroup.Item>)}
+                {[...Array(idx_count).keys()].map(value => <ListGroup.Item action OnClick={this.handleSwitching(value)}>value</ListGroup.Item>)}
             </ListGroup>)
     }
 
@@ -61,6 +61,10 @@ class Match extends Component {
             </ul>
         );
         return MatchList
+    }
+
+    handleSwitching = (idx) => {
+        this.setState({display_data: match_data.slice(idx * 5, idx * 5 + 1)})
     }
 
     handleSearch = async () => {
