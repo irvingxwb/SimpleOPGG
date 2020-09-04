@@ -17,8 +17,10 @@ start frontend server: ```npm start```
 # Todo roadmap
 this project is still in developing since I want to try different technologies on it and practice my web development skills more.
 - [x] Add more detailed game information
-- [ ] Finish user block and searching based on account ( currently it will only return plain text and a welcome title)
+- [x] Finish user block and searching based on account ( currently it will only return plain text and a welcome title)
 - [ ] Add multipaged match history (currently it only return top five records) 
+- [ ] use https for more secure request
+- [ ] add api key to user request field for authentication
 - [ ] Add player profile for specific account like rank, total matches, most played champions
 
 # Outlook (initial version)
