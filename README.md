@@ -17,7 +17,7 @@ start frontend server: ```npm start```
 # Current doing
 - [ ] Finish update riot api key script with selenium and run the script automatically when backend server started
 
-# Todo list (to record new ideas come to mind)
+# Todo list (new ideas)
 this project is still in developing since I want to try different technologies on it and practice my web development skills more.
 - [x] Add more detailed game information
 - [x] Finish user block and searching based on account ( currently it will only return plain text and a welcome title)
