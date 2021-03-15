@@ -1,3 +1,5 @@
+# Notes: 
+this repo will be rarely updates as I am busy with working stuff and I just started a WAY more interesting thing, scripting in league of legend XD! 
 # SimpleOPGG
 simple version of op.gg website
 
